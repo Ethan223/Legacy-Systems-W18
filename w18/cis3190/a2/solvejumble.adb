@@ -4,10 +4,10 @@ with ada.Float_Text_IO; use Ada.Float_Text_IO;
 with ada.characters.handling; use ada.characters.handling;
 with ada.strings.unbounded; use ada.strings.unbounded;
 with ada.strings.unbounded.Text_IO; use ada.strings.unbounded.Text_IO;
-with ada.command_line; use ada.command_line;
 procedure solvejumble is
-    jumbleset : array(1..argument_count) of unbounded_string;
-    type lexicon is array(integer range <>) of unbounded_string;    
+    type lexicon is array(integer range <>) of unbounded_string;
+    jumble : unbounded_string;
+    match : boolean := false;  
     
 
     function buildLEXICON return lexicon is
@@ -41,9 +41,8 @@ procedure solvejumble is
 
     procedure inputjumble is
     begin
-        for i in 1..argument_count loop
-            jumbleset(i) := to_unbounded_string(to_lower(argument(i)));
-        end loop;
+        put("Enter a word jumble (or `0` to terminate program): ");
+        get_line(jumble);
     end inputjumble;
 
     procedure swap(anagram : in out unbounded_string; a : in integer; b : in integer) is
@@ -61,6 +60,7 @@ procedure solvejumble is
         begin
             for i in 1..dictionary'last loop
                 if dictionary(i) = anagram then
+                    match := true;
                     put_line(anagram);
                 end if; 
             end loop;
@@ -80,15 +80,24 @@ procedure solvejumble is
     end generateanagram;
 
 begin
-    if argument_count = 0 then
-        put_line("Usage: ./solvejumble <anagram_1> <anagram_2> ... <anagram_n>");
-        return;
-    end if;
+    loop
+        inputjumble;
+        exit when jumble = "0";
+            
+        put("Anagrams for word jumble '");
+        put(jumble);
+        put_line("': ");
+        generateanagram(jumble, 1);
 
-    inputjumble;
-    for i in 1..jumbleset'length loop
-        generateanagram(jumbleset(i), 1);
+        if not match then
+            put_line("No matching anagrams found.");
+        end if;
+        
+        put_line("-----------------------"); new_line;
+        match := false;  --Reset for next input jumble
     end loop;
+
+    put_line("Exiting program...");
 end solvejumble;
 
 
@@ -99,21 +108,18 @@ end solvejumble;
 --    put_line(dictionary(i));
 --end loop;
 
---put("Enter a set of jumbles: ");
-        --get_line(jumbleset);
+--while i <= length(jumbleset) loop
+--    if element(jumbleset, i) = ' ' then
+--      put_line(slice(jumbleset, j, i-1));
+--        j := i + 1;
 
-        --while i <= length(jumbleset) loop
-        --    if element(jumbleset, i) = ' ' then
-          --      put_line(slice(jumbleset, j, i-1));
-            --    j := i + 1;
+--      while element(jumbleset, j) = ' ' loop
+        --  i := i + 1;
+        --    j := j + 1;
+      --end loop;
+    --end if;
 
-              --  while element(jumbleset, j) = ' ' loop
-                  --  i := i + 1;
-                --    j := j + 1;
-                --end loop;
-           -- end if;
-
-            --i := i + 1;
-        --end loop;
+    --i := i + 1;
+--end loop;
 
         --put(slice(jumbleset, j, i-1));
