@@ -12,8 +12,7 @@ with ada.strings.unbounded; use ada.strings.unbounded;
 with ada.strings.unbounded.Text_IO; use ada.strings.unbounded.Text_IO;
 procedure solvejumble is
     type strArray is array(integer range <>) of unbounded_string;
-    jumbleset : strArray(1..50);
-    status : boolean := true;
+    jumble : unbounded_string;
     match : boolean := false;  
     
 
@@ -53,23 +52,21 @@ procedure solvejumble is
 
     dictionary : strArray := buildlexicon;
 
-    function inputjumble return boolean is
-        jumblecount : integer := 0;    --Keeps track of how many jumbles user entered
-        jumblelist : unbounded_string; --Comma delimited list of jumbles
+    function inputjumble return unbounded_string is
         input : unbounded_string;
-        j : integer := 1;
-        k : integer := 1;
 
         --Helper funtion for making sure only letters are entered
         function validateinput return boolean is
         begin
             if length(input) > 6 then
                 put_line("Error: Word jumbles can only be at most 6 characters");
+                put_line("-----------------------------------------");
                 return false;
             else
                 for i in 1..length(input) loop
                     if not is_basic(element(input, i)) then
                         put_line("Error: Word jumbles can only contain letters");
+                        put_line("-----------------------------------------");
                         return false;
                     end if;
                 end loop;
@@ -80,32 +77,19 @@ procedure solvejumble is
 
     begin
         loop
-            put_line("1) Find anagrams");
-            put_line("2) Exit");
-            put("Enter a word jumble: ");
+            new_line;
+            put("Enter a word jumble (or '0' to exit): ");
             get_line(input);
 
-            if input = "1" then
-                exit;
-            elsif input = "2" then
-                return false;
+            --Convert unbounded string to lower case
+            input := to_unbounded_string(to_lower(to_string(input)));
+
+            if input = "0" then
+                return input;
             elsif validateinput then
-                append(jumblelist, input);
-                append(jumblelist, ",");
-                jumblecount := jumblecount + 1;
+                return input;
             end if;
-        end loop;
-
-        for i in 1..length(jumblelist)-1 loop
-            if element(jumblelist, i) = ',' then
-                jumbleset(k) := to_unbounded_string(slice(jumblelist, j, i-1));
-                put_line(jumbleset(k));
-                j := i + 1;
-                k := k + 1;
-            end if;
-        end loop;
-
-        return true;      
+        end loop;      
     end inputjumble;
 
     procedure swap(anagram : in out unbounded_string; a : in integer; b : in integer) is
@@ -145,22 +129,20 @@ procedure solvejumble is
 
 begin
     loop
-        status := inputjumble;
-        exit when status = false;
+        jumble := inputjumble;
+        exit when jumble = "0";
             
-        for i in 1..3 loop
-            put(to_upper(to_string(jumbleset(i))));
-            put(":    ");
-            generateanagram(jumbleset(i), 1);
-            new_line;
+        put(to_upper(to_string(jumble)));
+        put(":    ");
+        generateanagram(jumble, 1);        
 
-            if not match then
-            put_line("No matching anagrams found.");
-            end if;
-        
-            put_line("-----------------------"); new_line;
-            match := false;  --Reset for next input jumble
-        end loop;
+        if not match then
+            put("No matching anagrams found.");
+        end if;
+        new_line;
+        put_line("-----------------------------------------");
+
+        match := false;  --Reset for next input jumble
     end loop;
 
     put_line("Exiting program...");
