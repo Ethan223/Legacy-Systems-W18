@@ -11,22 +11,26 @@ with ada.characters.handling; use ada.characters.handling;
 with ada.strings.unbounded; use ada.strings.unbounded;
 with ada.strings.unbounded.Text_IO; use ada.strings.unbounded.Text_IO;
 procedure solvejumble is
-    type strArray is array(integer range <>) of unbounded_string;
-    jumble : unbounded_string;
-    match : boolean := false;  
+    type strArray is array(integer range <>) of unbounded_string; --Unbounded string data structure type for dictionary
+    jumble : unbounded_string; --User word jumble input
+    match : boolean := false;  --Flag for displaying proper output depending on anagrams found
     
 
+    --Builds dictionary at the beginning of the program to verify that an anagram is a valid english word
+    --Return: Array of unbounded strings
     function buildlexicon return strArray is
-        infp : file_type;
-        i : integer := 1;
-        str : unbounded_string;
+        infp : file_type;       --File pointer (Read only)
+        i : integer := 1;       --Maps index to store word
+        str : unbounded_string; --Temporary string for comparing
     begin
         open(infp, in_file, "/usr/share/dict/words");        
+        
+        --Finds number of words up to 6 letters for getting dictionary array bounds
         while not end_of_file(infp) loop
             str := get_line(infp);
             
             if length(str) < 7 then
-                i := i + 1; --Finds number of words up to 6 letters for getting dictionary array bounds
+                i := i + 1;
             end if;
         end loop;        
 
@@ -52,17 +56,20 @@ procedure solvejumble is
 
     dictionary : strArray := buildlexicon;
 
+    --Obtains user input in the form of a jumbled word and outputs information to the user
+    --Return: A valid lower case word jumble with only letters
     function inputjumble return unbounded_string is
         input : unbounded_string;
 
-        --Helper funtion for making sure only letters are entered
+        --Helper function for making sure only letters are entered
+        --Return: True if input is < 6 in length and only contains letters
         function validateinput return boolean is
         begin
-            if length(input) > 6 then
+            if length(input) > 6 then --Input too large?
                 put_line("Error: Word jumbles can only be at most 6 characters");
                 put_line("-----------------------------------------");
                 return false;
-            else
+            else --Does the input contain characters other than [A-Za-z]?
                 for i in 1..length(input) loop
                     if not is_basic(element(input, i)) then
                         put_line("Error: Word jumbles can only contain letters");
@@ -84,14 +91,15 @@ procedure solvejumble is
             --Convert unbounded string to lower case
             input := to_unbounded_string(to_lower(to_string(input)));
 
-            if input = "0" then
+            if input = "0" then --No need to validate if the input was 0 to exit
                 return input;
-            elsif validateinput then
+            elsif validateinput then --Validate word jumble
                 return input;
             end if;
         end loop;      
     end inputjumble;
 
+    --Swaps 2 characters in a given string along with the 2 indexes to be swapped
     procedure swap(anagram : in out unbounded_string; a : in integer; b : in integer) is
         tmp : character;
     begin
@@ -100,14 +108,16 @@ procedure solvejumble is
         replace_element(anagram, b, tmp);
     end swap;
 
+    --Recursively generates all permutations of a given word jumble
     procedure generateanagram(anagram : in out unbounded_string; i : in integer) is
         j : integer;
         
+        --Helper procedure for searching and printing the anagrams in a dictionary for each permutation
         procedure findanagram is        
         begin
             for i in 1..dictionary'last loop
                 if dictionary(i) = anagram then
-                    match := true;
+                    match := true; --Do not output 'no anagrams found'
                     put(anagram);
                     put(" ");
                 end if;
@@ -115,7 +125,7 @@ procedure solvejumble is
         end findanagram;
 
     begin
-        if i = length(anagram)  then
+        if i = length(anagram)  then --Terminating condition
             findanagram;
         else
             j := i;
@@ -127,9 +137,9 @@ procedure solvejumble is
         end if;
     end generateanagram;
 
-begin
+begin --Main program
     loop
-        jumble := inputjumble;
+        jumble := inputjumble; --Get valid word jumble
         exit when jumble = "0";
             
         put(to_upper(to_string(jumble)));
@@ -147,27 +157,3 @@ begin
 
     put_line("Exiting program...");
 end solvejumble;
-
-
---for i in 1..20 loop
---    put("dictionary[");
---    put(i, 1);
---    put("] = ");
---    put_line(dictionary(i));
---end loop;
-
---while i <= length(jumbleset) loop
---    if element(jumbleset, i) = ' ' then
---      put_line(slice(jumbleset, j, i-1));
---        j := i + 1;
-
---      while element(jumbleset, j) = ' ' loop
-        --  i := i + 1;
-        --    j := j + 1;
-      --end loop;
-    --end if;
-
-    --i := i + 1;
---end loop;
-
-        --put(slice(jumbleset, j, i-1));
