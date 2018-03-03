@@ -54,7 +54,7 @@ procedure solvejumble is
         end;
     end buildlexicon;
 
-    dictionary : strArray := buildlexicon;
+    dictionary : strArray := buildlexicon; --Builds dictionary before main program runs
 
     --Obtains user input in the form of a jumbled word and outputs information to the user
     --Return: A valid lower case word jumble with only letters
@@ -65,8 +65,8 @@ procedure solvejumble is
         --Return: True if input is < 6 in length and only contains letters
         function validateinput return boolean is
         begin
-            if length(input) > 6 then --Input too large?
-                put_line("Error: Word jumbles can only be at most 6 characters");
+            if length(input) < 1 or length(input) > 6 then --Input too large or empty?
+                put_line("Error: Word jumbles must be between 1 and 6 characters");
                 put_line("-----------------------------------------");
                 return false;
             else --Does the input contain characters other than [A-Za-z]?
