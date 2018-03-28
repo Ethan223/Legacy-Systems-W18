@@ -6,7 +6,7 @@
 !of Sieve of Eratosthenes algorithm.
 !-------------------------------------------------------
 program sieve
-    integer :: numberset(2:100)
+    integer, allocatable :: numberset(:)
     integer :: limit
     integer :: i, j
     character (len=20) :: filename
@@ -26,8 +26,17 @@ program sieve
     end if
 
     
-    !TODO: ask for input and dynamic array bounds
-    limit = 100
+    !TODO: validate input
+    write(*,'(a)') 'Enter a limit: '
+    read(*,*) limit
+
+    if(limit < 2 .or. limit > 1000000) then
+        write(*,'(a)') 'Error: Invalid limit'
+        stop
+    else
+        allocate(numberset(2:limit))
+    end if
+        
 
     do i = 2,limit
         numberset(i) = i
