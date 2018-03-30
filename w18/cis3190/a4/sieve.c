@@ -1,10 +1,10 @@
-/*************************************************
+/***************************************************
 Name: Ethan Coles
 ID: 0843081
 File: sieve.c
-Description: CIS*3190 Assignment 4, C implentation
+Description: CIS*3190 Assignment 4, C implementation
 of Sieve of Eratosthenes algorithm.
-*************************************************/
+***************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
     int limit, i, j; /*Upper limit of prime numbers to output*/
     char buffer[80]; /*Input buffer*/
 
-    printf("Enter a limit: ");
+    printf("Enter an upper limit: ");
     fgets(buffer, 80, stdin);
 
     i = 0; /*Verify input is a number*/
@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    fp = fopen("primeNumbers.txt", "w"); /*Write to file*/
+    fp = fopen("output.txt", "w"); /*Write to file*/
     if(fp == NULL) {
         fprintf(stderr, "Error opening file.\n");
         free(prime);

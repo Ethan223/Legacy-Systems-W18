@@ -1,10 +1,10 @@
-!-------------------------------------------------------
+!----------------------------------------------------------
 !Name: Ethan Coles
 !ID: 0843081
 !File: sieve.f95
-!Description: CIS*3190 Assignment 4, Fortran implentation
+!Description: CIS*3190 Assignment 4, Fortran implementation
 !of Sieve of Eratosthenes algorithm.
-!-------------------------------------------------------
+!----------------------------------------------------------
 program sieve
     integer, allocatable :: numberset(:)
     integer :: limit
@@ -26,11 +26,11 @@ program sieve
     end if
 
     
-    !TODO: validate input
-    write(*,'(a)') 'Enter a limit: '
+    !Ask for upper limit
+    write(*,'(a)') 'Enter an upper limit: '
     read(*,*) limit
 
-    if(limit < 2 .or. limit > 1000000) then
+    if(limit < 2 .or. limit > 10000000) then
         write(*,'(a)') 'Error: Invalid limit'
         stop
     else
