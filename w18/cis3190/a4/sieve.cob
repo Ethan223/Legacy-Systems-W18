@@ -1,7 +1,7 @@
 *>--------------------------------------------------------
 *>name: ethan coles
 *>id: 0843081
-*>file: sieve.f95
+*>file: sieve.cob
 *>description: cis*3190 assignment 4, cobol implementation
 *>of sieve of eratosthenes algorithm.
 *>--------------------------------------------------------
