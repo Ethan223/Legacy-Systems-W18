@@ -8,9 +8,11 @@
 with ada.Text_IO; use Ada.Text_IO;
 with ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with ada.Calendar; use Ada.Calendar;
+with ada.Numerics.Elementary_Functions; use Ada.Numerics.Elementary_Functions;
 procedure sieve is
     type numset is array(integer range <>) of integer;
     limit : integer;
+    limitsq : float;
     outfp : file_type;
 
     --Time variables
@@ -42,8 +44,9 @@ begin
     end loop;
 
     starttime := clock;
+    limitsq := sqrt(float(limit));
     --Main algorithm
-    for i in 2..limit loop
+    for i in 2..integer(limitsq) loop
         if primeset(i) /= 0 then
             for j in i+1..limit loop
                 if primeset(j) mod primeset(i) = 0 then
@@ -64,7 +67,7 @@ begin
     end loop;
 
     close(outfp);
-    put("Successfully wrote prime numbers to output.txt.");
+    put_line("Successfully wrote prime numbers to output.txt.");
     
     --Time data
     endtime := clock;

@@ -9,6 +9,8 @@ of Sieve of Eratosthenes algorithm.
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
+#include <math.h>
 
 /*Initializes array of integers from 2 to the upper limit.*/
 int* populatePrimes(int* prime, int upperLim) {
@@ -37,6 +39,10 @@ int main(int argc, char *argv[]) {
     int limit, i, j; /*Upper limit of prime numbers to output*/
     char buffer[80]; /*Input buffer*/
 
+    clock_t begin;
+    clock_t end;
+    double timeExec;
+
     printf("Enter an upper limit: ");
     fgets(buffer, 80, stdin);
 
@@ -57,11 +63,13 @@ int main(int argc, char *argv[]) {
         return -1;
     }
     
+    begin = clock();
+    
     limit -= 1; /*1 less array element because starting at 2*/
     prime = malloc(sizeof(int)*limit);
     prime = populatePrimes(prime, limit);
 
-    for(i=0; i<limit; i++) { /*Main algorithm for Sieve of Eratosthenes*/
+    for(i=0; i<sqrt(limit); i++) { /*Main algorithm for Sieve of Eratosthenes*/
         if(prime[i] != 0) {
             for(j=i+1; j<limit; j++) {
                 if(prime[j]%prime[i] == 0)
@@ -79,7 +87,11 @@ int main(int argc, char *argv[]) {
     printPrimes(fp, prime, limit);
     fclose(fp);
 
-    printf("Successfully wrote prime numbers to output.txt.");
+    end = clock();
+    timeExec = (double)(end - begin)/CLOCKS_PER_SEC;
+
+    printf("Successfully wrote prime numbers to output.txt.\n");
+    printf("Algorithm Time: %lf seconds.\n", timeExec);
     free(prime);    
     return 0;
 }

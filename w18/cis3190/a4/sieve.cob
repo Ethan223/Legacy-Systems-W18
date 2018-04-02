@@ -43,7 +43,7 @@ procedure division.
             stop run
     end-read.
     
-    if upperlim < 2 or upperlim > 9999999
+    if upperlim < 2 or upperlim > 99999999
         display 'error: invalid upper limit'
         stop run
     end-if.
@@ -54,7 +54,7 @@ procedure division.
     end-perform.
     
     *>Main algorithm
-    perform varying i from 1 by 1 until i >= upperlim
+    perform varying i from 1 by 1 until i >= upperlim ** 0.5
         if pr(i) is not = 0
             compute offset = i + 1
             
