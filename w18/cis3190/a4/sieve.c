@@ -51,8 +51,13 @@ int main(int argc, char *argv[]) {
     }
 
     limit = atoi(buffer);
-    limit -= 1; /*1 less array element because starting at 2*/
 
+    if(limit < 2 || limit > 999999999) {
+        fprintf(stderr, "Error: Invalid limit value\n");
+        return -1;
+    }
+    
+    limit -= 1; /*1 less array element because starting at 2*/
     prime = malloc(sizeof(int)*limit);
     prime = populatePrimes(prime, limit);
 
@@ -74,6 +79,7 @@ int main(int argc, char *argv[]) {
     printPrimes(fp, prime, limit);
     fclose(fp);
 
+    printf("Successfully wrote prime numbers to output.txt.");
     free(prime);    
     return 0;
 }

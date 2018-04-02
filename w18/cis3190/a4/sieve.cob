@@ -29,28 +29,31 @@ working-storage section.
 01  input-area.
     02  in-r pic x(1) occurs 80 times.
 01  primeset.
-    02  pr pic 9(10) occurs 2 to 999999999 times depending on upperlim.
+    02  pr pic 9(10) occurs 2 to 9999999 times depending on upperlim.
 01  i pic 9(10).
 01  j pic 9(10).
 01  offset pic 9(10).
 procedure division.
     open input standard-input, output standard-output.
 
+    *>Ask for upper limit and check if valid
     display 'enter an upper limit: ' with no advancing.
     read standard-input into upperlim
             at end close standard-input, standard-output
             stop run
     end-read.
     
-    if upperlim < 2 or upperlim > 999999999
+    if upperlim < 2 or upperlim > 9999999
         display 'error: invalid upper limit'
         stop run
     end-if.
     
+    *>Initialize array of numbers
     perform varying i from 1 by 1 until i >= upperlim
         compute pr(i) = i + 1
     end-perform.
     
+    *>Main algorithm
     perform varying i from 1 by 1 until i >= upperlim
         if pr(i) is not = 0
             compute offset = i + 1
@@ -81,3 +84,4 @@ procedure division.
     end-perform.
     
     close outfile.
+    display 'Successfully wrote prime numbers to output.txt.'.

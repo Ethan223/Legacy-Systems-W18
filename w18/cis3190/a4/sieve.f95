@@ -26,11 +26,11 @@ program sieve
     end if
 
     
-    !Ask for upper limit
+    !Ask for upper limit and check if valid
     write(*,'(a)') 'Enter an upper limit: '
     read(*,*) limit
 
-    if(limit < 2 .or. limit > 10000000) then
+    if(limit < 2 .or. limit > 999999999) then
         write(*,'(a)') 'Error: Invalid limit'
         stop
     else
@@ -38,10 +38,12 @@ program sieve
     end if
         
 
+    !Initialize array of numbers
     do i = 2,limit
         numberset(i) = i
     end do
 
+    !Main algorithm
     do i = 2,limit
         if(numberset(i) /= 0) then
             do j = i+1,limit
@@ -65,4 +67,5 @@ program sieve
     end do
     
     close(9, status='keep')
+    write(*,'(a)') 'Successfully wrote prime numbers up to output.txt.'
 end program sieve

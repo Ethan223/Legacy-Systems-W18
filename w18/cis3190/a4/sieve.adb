@@ -18,6 +18,7 @@ procedure sieve is
     endtime : time;
     millisec : duration;
 
+    --Asks for upper limit and returns an array of integers of that size
     function inputlimit return numset is
     begin
         put("Enter an upper limit: ");
@@ -31,14 +32,17 @@ procedure sieve is
         end;                               
     end inputlimit;
 
+    --Call for input first so the array size can be allocated to the upper limit's size
     primeset : numset := inputlimit;
 
 begin
+    --Initialize array of numbers
     for i in 2..limit loop
         primeset(i) := i;
     end loop;
 
     starttime := clock;
+    --Main algorithm
     for i in 2..limit loop
         if primeset(i) /= 0 then
             for j in i+1..limit loop
@@ -60,6 +64,7 @@ begin
     end loop;
 
     close(outfp);
+    put("Successfully wrote prime numbers to output.txt.");
     
     --Time data
     endtime := clock;
