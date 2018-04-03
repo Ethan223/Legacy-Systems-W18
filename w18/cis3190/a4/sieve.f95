@@ -8,7 +8,6 @@
 program sieve
     integer, allocatable :: numberset(:)
     integer :: limit
-    real :: limitsq
     integer :: i, j
     character (len=20) :: filename
     character (len=10) :: numformat
@@ -39,7 +38,6 @@ program sieve
         stop
     else
         allocate(numberset(2:limit))
-        limitsq = sqrt(real(limit))
     end if
         
 
@@ -50,7 +48,7 @@ program sieve
 
     !Main algorithm
     call cpu_time(starttime)
-    do i = 2,int(limitsq)
+    do i = 2,int(limit**0.5)
         if(numberset(i) /= 0) then
             do j = i+1,limit
                 if(numberset(i) /= 0 .and. mod(numberset(j), numberset(i)) == 0) then
@@ -77,5 +75,5 @@ program sieve
     exectime = endtime - starttime
 
     write(*,*) 'Algorithm time in seconds: ', exectime
-    write(*,'(a)') 'Successfully wrote prime numbers to output.txt.'
+    write(*,*) 'Successfully wrote prime numbers to ', filename
 end program sieve

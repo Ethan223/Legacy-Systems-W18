@@ -27,7 +27,6 @@ for i in range(2,upperLimit+1):
     primeSet.append(i)
 
 upperLimitSq = int(math.sqrt(upperLimit))
-print("SQRT = " + str(upperLimitSq))
 
 #Main algorithm
 startTime = time.time()
