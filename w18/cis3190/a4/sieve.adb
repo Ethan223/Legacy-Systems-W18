@@ -18,7 +18,7 @@ procedure sieve is
     --Time variables
     starttime : time; 
     endtime : time;
-    millisec : duration;
+    exectime : duration;
 
     --Asks for upper limit and returns an array of integers of that size
     function inputlimit return numset is
@@ -71,6 +71,6 @@ begin
     
     --Time data
     endtime := clock;
-    millisec := (endtime - starttime)*1000;
-    put_line("Algorithm Time: " & duration'image(millisec) & " milliseconds.");
+    exectime := endtime - starttime;
+    put_line("Algorithm Time: " & duration'image(exectime) & " seconds.");
 end sieve;
