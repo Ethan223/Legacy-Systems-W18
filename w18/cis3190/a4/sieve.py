@@ -1,4 +1,4 @@
-#!usr/bin/python3/
+#!usr/bin/python/
 #***************************************************
 #Name: Ethan Coles
 #ID: 0843081
