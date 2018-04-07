@@ -14,4 +14,4 @@ cobol: sieve.cob
 	
 
 clean:
-	rm -f fortran ada cobol c python
+	rm -f fortran ada cobol c

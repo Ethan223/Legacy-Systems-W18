@@ -26,8 +26,6 @@ working-storage section.
 01  upperlim pic S9(10).
 01  quotient pic 9(10).
 01  rem pic 9(10).
-01  input-area.
-    02  in-r pic x(1) occurs 80 times.
 01  primeset.
     02  pr pic 9(10) occurs 2 to 9999999 times depending on upperlim.
 01  i pic 9(10).
